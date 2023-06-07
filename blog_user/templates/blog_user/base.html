@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiteBlog</title>
+</head>
+<body>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <div style="background-color: lightblue; padding: 20px; margin-bottom: 20px;">
+        <h1>LiteBlog - Share Your Story, LiteBlog-style.</h1>
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <div style="background-color: lightblue; padding: 20px; margin-top: 20px;">
+        <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum obcaecati minima et rem hic placeat, vitae delectus deserunt alias facere, odit sequi, corrupti ab vero voluptas molestias. Eum, inventore enim.</h3>
+    </div>
+</body>
+</html>
