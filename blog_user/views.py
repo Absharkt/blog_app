@@ -23,7 +23,7 @@ def home(request):
 
     user_posts = Post.objects.filter(author=request.user)
 
-    profile = get_object_or_404(Profile, user=request.user)
+    profile = Profile.objects.get(user=request.user)
     friends = profile.friends.all()
 
 
@@ -80,3 +80,16 @@ def friend_blog(request,frnd_id):
 
     context = {'friend':friend,'posts':posts}
     return render(request,'blog_user/friend.html',context)
+
+
+def edit_blog(request,blog_id):
+    blog = Post.objects.get(id = blog_id)
+    
+    form = PostForm(instance=blog)
+    if request.method == 'POST':
+        form = PostForm(request.POST,instance=blog)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'blog':blog,'form':form}
+    return render(request,'blog_user/edit-blog.html',context)

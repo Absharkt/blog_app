@@ -47,7 +47,9 @@
             <div class="posts">
                 <h4>{{ post.title }}</h4>
                 <p>{{ post.content }}</p>
-                <p>{{ post.created_at | timesince }} ago</p>
+                <p>Posted {{ post.created_at | timesince }} ago</p>
+                <br>
+                <a href="{% url 'edit_blog' post.id %}">Edit</a>
             </div>
         {% endfor %}
     </div>

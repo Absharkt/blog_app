@@ -1,0 +1,14 @@
+{% extends 'blog_user/base.html' %}
+
+{% block content %}
+
+<h2>Edit blog - '{{blog.title}}'</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+
+    <button type="submit">Update</button>
+</form>
+
+{% endblock %}

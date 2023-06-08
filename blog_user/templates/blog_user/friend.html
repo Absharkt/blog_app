@@ -20,7 +20,7 @@
             <div class="posts" style="padding: 15px; background-color: rgb(232, 242, 247); margin: 10px; max-width: 500px;">
                 <h4>{{ post.title }}</h4>
                 <p>{{ post.content }}</p>
-                <p>{{ post.created_at | timesince }} ago</p>
+                <p>Posted {{ post.created_at | timesince }} ago</p>
             </div>
         {% endfor %}
     </div>
