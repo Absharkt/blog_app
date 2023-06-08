@@ -9,6 +9,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=50,blank=True,null=True)
     bio = models.TextField(max_length=200, blank=True,null=True)
     location = models.CharField(max_length=100,blank=True,null=True)
+    friends = models.ManyToManyField('self', blank=True)
 
     def __str__(self):
         return self.username
@@ -25,6 +26,14 @@ class Post(models.Model):
         return f"{self.title} : {self.author}"
 
     # Add other post-related fields like tags, likes, etc.
+
+
+# class Friends(models.Model):
+#     friend1 = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user1_friends')
+#     friend2 = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user2_friends')
+
+#     def __str__(self):
+#         return f'{self.friend1} - {self.friend2}'
 
 # class Comment(models.Model):
 #     post = models.ForeignKey(Post, on_delete=models.CASCADE)

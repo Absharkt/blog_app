@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from blog_user.forms import CreateProfile,PostForm
 from .models import Profile,Post
@@ -22,9 +22,12 @@ def home(request):
             post.save()
 
     user_posts = Post.objects.filter(author=request.user)
-    all_users = Profile.objects.all()
 
-    context = {'form':form,'posts':user_posts,'all_users':all_users}
+    profile = get_object_or_404(Profile, user=request.user)
+    friends = profile.friends.all()
+
+
+    context = {'form':form,'posts':user_posts,'friends': friends}
     return render(request,'blog_user/home.html',context)
 
 @unauthenticated_user

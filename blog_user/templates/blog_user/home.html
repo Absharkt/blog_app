@@ -54,8 +54,10 @@
 
     <div>
         <h3>Friends</h3>
-        {% for friend in all_users %}
-            <h4><a href="{% url 'friend' friend.id %}">{{friend.username}}</a></h4>
+        {% for friend in friends %}
+            <li><a href="{% url 'friend' friend.id %}">{{ friend.user.username }}</a></li>
+        {% empty %}
+            <p>No friends</p>
         {% endfor %}
     </div>
 </div>
