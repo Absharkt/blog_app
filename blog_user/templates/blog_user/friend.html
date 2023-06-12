@@ -26,4 +26,18 @@
     </div>
 </div>
 
+
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit"><a href="">Send Friend Request</a></button>
+</form>
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <button type="submit">Accept Friend Request</button>
+</form>
+
+
 {% endblock %}

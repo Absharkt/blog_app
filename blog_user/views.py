@@ -23,12 +23,39 @@ def home(request):
 
     user_posts = Post.objects.filter(author=request.user)
 
-    profile = Profile.objects.get(user=request.user)
+    profile = Profile.objects.get(id = request.user.profile.id) # user = req.user
     friends = profile.friends.all()
+    can_req_to = Profile.objects.exclude(friends=profile).exclude(requests_sent=profile).exclude(requests_received=profile).exclude(user = request.user)
+    can_acc_frm = profile.requests_received.all()
 
 
-    context = {'form':form,'posts':user_posts,'friends': friends}
+    context = {'form':form,'posts':user_posts,'friends': friends,'all_users':can_req_to,'can_acc_frm':can_acc_frm}
     return render(request,'blog_user/home.html',context)
+
+
+def send_request(request,profile_id):
+    logged_user = Profile.objects.get(id = request.user.profile.id)
+    requested_user = Profile.objects.get(id = profile_id)
+    logged_user.send_request(requested_user)
+
+    # loggd = logged_user.id
+    # reqd = requested_user.id
+    # print(loggd)
+    # print(reqd)
+    return redirect('home')
+
+
+def accept_request(request,profile_id):
+    frnd_req = Profile.objects.get(id=profile_id)
+    logged_user = Profile.objects.get(id = request.user.profile.id) #request.userid
+    logged_user.accept_request(frnd_req)
+    
+    # req = frnd_req.id
+    # loggd = logged_user.id
+    # print(loggd)
+    # print(req)
+    return redirect('home')
+
 
 @unauthenticated_user
 def signup(request):

@@ -10,6 +10,19 @@ class Profile(models.Model):
     bio = models.TextField(max_length=200, blank=True,null=True)
     location = models.CharField(max_length=100,blank=True,null=True)
     friends = models.ManyToManyField('self', blank=True)
+    requests_sent = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='sent_friend_requests')
+    requests_received = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='received_friend_requests')
+
+    def send_request(self, to_user):
+        self.requests_sent.add(to_user)
+        to_user.requests_received.add(self)
+        print('requst send successfully')
+
+    def accept_request(self, from_user):
+        self.requests_received.remove(from_user)
+        from_user.requests_sent.remove(self)
+        self.friends.add(from_user)
+        print('success')
 
     def __str__(self):
         return self.username

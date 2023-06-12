@@ -10,13 +10,15 @@
     .posts{
         border: 1px solid darkblue;
         padding: 15px;
-        width: 50%;
+        max-width: 300px;
         margin: 15px;
+    }
+    .posts p{
     }
 
     .container{
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         margin-top: 20px;
         background-color: rgb(243, 243, 243);
     }
@@ -38,6 +40,7 @@
     </form>
 </div>
 
+
 <hr>
 
 <div class="container">
@@ -47,8 +50,8 @@
             <div class="posts">
                 <h4>{{ post.title }}</h4>
                 <p>{{ post.content }}</p>
-                <p>Posted {{ post.created_at | timesince }} ago</p>
                 <br>
+                <p>Posted {{ post.created_at | timesince }} ago</p>
                 <a href="{% url 'edit_blog' post.id %}">Edit</a>
             </div>
         {% endfor %}
@@ -62,7 +65,29 @@
             <p>No friends</p>
         {% endfor %}
     </div>
+
+    <div class="blocks">
+        <h3>More Friends</h3>
+        <br>
+        
+        {% for user in all_users %}
+                <li>{{ user.username }}</li>
+                <button><a href="{% url 'send_req' user.id %}">Send request</a></button>
+        {% endfor %}
+    </div>
+
+    <div class="blocks">
+        <h3>Accept Requests</h3>
+        <br>
+        {% for user in can_acc_frm %}
+            <li>{{ user.username }}</li>
+            <button><a href="{% url 'accept_req' user.id %}">Accept</a></button>
+        {% endfor %}
+    </div>
+
 </div>
+
+
 
 
 

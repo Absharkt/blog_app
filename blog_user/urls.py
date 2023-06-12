@@ -10,4 +10,7 @@ urlpatterns = [
     path('<int:frnd_id>',views.friend_blog,name='friend'),
     path('edit/<int:blog_id>',views.edit_blog,name='edit_blog'),
 
+    path('send/<int:profile_id>', views.send_request, name='send_req'),
+    path('accept/<int:profile_id>', views.accept_request, name='accept_req'),
+
 ]
