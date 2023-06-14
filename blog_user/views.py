@@ -13,14 +13,6 @@ def index(request):
 
 @login_required(login_url='login')
 def home(request):
-    form = PostForm
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False) #add user to profile model
-            post.author = request.user
-            post.save()
-
     user_posts = Post.objects.filter(author=request.user)
 
     profile = Profile.objects.get(id = request.user.profile.id) # user = req.user
@@ -29,7 +21,7 @@ def home(request):
     can_acc_frm = profile.requests_received.all()
 
 
-    context = {'form':form,'posts':user_posts,'friends': friends,'all_users':can_req_to,'can_acc_frm':can_acc_frm}
+    context = {'posts':user_posts,'friends': friends,'all_users':can_req_to,'can_acc_frm':can_acc_frm}
     return render(request,'blog_user/home.html',context)
 
 
@@ -38,10 +30,6 @@ def send_request(request,profile_id):
     requested_user = Profile.objects.get(id = profile_id)
     logged_user.send_request(requested_user)
 
-    # loggd = logged_user.id
-    # reqd = requested_user.id
-    # print(loggd)
-    # print(reqd)
     return redirect('home')
 
 
@@ -50,10 +38,6 @@ def accept_request(request,profile_id):
     logged_user = Profile.objects.get(id = request.user.profile.id) #request.userid
     logged_user.accept_request(frnd_req)
     
-    # req = frnd_req.id
-    # loggd = logged_user.id
-    # print(loggd)
-    # print(req)
     return redirect('home')
 
 
@@ -120,3 +104,25 @@ def edit_blog(request,blog_id):
             return redirect('home')
     context = {'blog':blog,'form':form}
     return render(request,'blog_user/edit-blog.html',context)
+
+
+def add_blog(request):
+    form = PostForm
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False) #add user to profile model
+            post.author = request.user
+            post.save()
+            
+    return render(request,'blog_user/add-blog.html',{'form':form})
+
+
+def find_friends(request):
+    profile = Profile.objects.get(id = request.user.profile.id) # user = req.user
+    friends = profile.friends.all()
+    can_req_to = Profile.objects.exclude(friends=profile).exclude(requests_sent=profile).exclude(requests_received=profile).exclude(user = request.user)
+    can_acc_frm = profile.requests_received.all()
+
+    context = {'all_users':can_req_to,'can_acc_frm':can_acc_frm}
+    return render(request,'blog_user/find-friends.html',context)
