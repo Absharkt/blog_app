@@ -1,14 +1,28 @@
 {% extends 'blog_user/base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
 
-<h2>Edit blog - '{{blog.title}}'</h2>
+<div class="section-edit-blog bg-light">
+    <div class="container">
+        <div class="row">
+            <h4 class="mt-5">Edit blog - '{{blog.title}}'</h4>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
+        <div class="row">
+            <div class="col-sm-12 col-md-8">
+                <form method="post">
+                    {% csrf_token %}
+                    {% render_field form.title placeholder="Title" class="form-control my-4" %}
+                    {% render_field form.content placeholder="Start Writing.." class="form-control my-2" %}
+                
+                    <button class="btn btn-sm btn-dark my-3" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <button type="submit">Update</button>
-</form>
+
 
 {% endblock %}

@@ -3,28 +3,43 @@
 {% block content %}
 
 <style>
-    .container{
-        padding: 25px;
-        background-color: rgb(51, 122, 148);
+    .posts {
+        padding: 20px 50px;
+        background-color: rgb(233, 233, 233);
+        margin: 30px 0;
+    }
+
+    .section-frnds-blog{
+        min-height: 80vh;
     }
 </style>
 
-<div class="container">
-    <div style="margin-bottom: 30px;">
-        <h2>{{friend.username | capfirst }}'s Blog</h2>
-    </div>
 
-    <div >
-        <h3>{{friend.username | capfirst }}'s Posts</h3>
-        {% for post in posts %}
-            <div class="posts" style="padding: 15px; background-color: rgb(232, 242, 247); margin: 10px; max-width: 500px;">
-                <h4>{{ post.title }}</h4>
-                <p>{{ post.content }}</p>
-                <p>Posted {{ post.created_at | timesince }} ago</p>
+<div class="section-frnds-blog  bg-light">
+    <div class="container">
+        <div class="row">
+            <h4 class="mt-5">{{friend.username | capfirst }}'s Blog</h4>
+        </div>
+
+        <div class="col-sm-12 col-md-8">
+            <div>
+                {% for post in posts %}
+                    <div class="posts" >
+                        <h4>{{ post.title }}</h4>
+                        <p>{{ post.content }}</p>
+                        <p class="form-text" style="font-size: 0.8rem;">Posted {{ post.created_at | timesince }} ago</p>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
+            .
     </div>
 </div>
+
+
+
+
+    
 
 
 
