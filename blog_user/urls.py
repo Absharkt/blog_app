@@ -16,5 +16,8 @@ urlpatterns = [
     path('add-blog',views.add_blog,name='add_blog'),
     path('find-friends',views.find_friends,name='find_friends'),
 
+    path('search-user',views.search_user,name='search_user'),
+
+
 
 ]

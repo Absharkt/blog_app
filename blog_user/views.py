@@ -5,6 +5,8 @@ from .models import Profile,Post
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -19,7 +21,6 @@ def home(request):
     friends = profile.friends.all()
     can_req_to = Profile.objects.exclude(friends=profile).exclude(requests_sent=profile).exclude(requests_received=profile).exclude(user = request.user)
     can_acc_frm = profile.requests_received.all()
-
 
     context = {'posts':user_posts,'friends': friends,'all_users':can_req_to,'can_acc_frm':can_acc_frm}
     return render(request,'blog_user/home.html',context)
@@ -88,7 +89,7 @@ def friend_blog(request,frnd_id):
     friend = Profile.objects.get(id = frnd_id)
     user_id = friend.user
     posts = Post.objects.filter(author = user_id) #author is foriegn key,(id)
-
+    
     context = {'friend':friend,'posts':posts}
     return render(request,'blog_user/friend.html',context)
 
@@ -114,6 +115,7 @@ def add_blog(request):
             post = form.save(commit=False) #add user to profile model
             post.author = request.user
             post.save()
+            return redirect('home')
             
     return render(request,'blog_user/add-blog.html',{'form':form})
 
@@ -126,3 +128,17 @@ def find_friends(request):
 
     context = {'all_users':can_req_to,'can_acc_frm':can_acc_frm}
     return render(request,'blog_user/find-friends.html',context)
+
+@csrf_exempt
+def search_user(request):
+    if request.method == 'POST':
+        keyword = request.POST['key']
+
+        profiles = Profile.objects.filter(username__icontains = keyword)
+        users = [{"username":user.username} for user in profiles]
+        print(users)
+
+        return JsonResponse({'users':users},safe=False)
+    
+
+

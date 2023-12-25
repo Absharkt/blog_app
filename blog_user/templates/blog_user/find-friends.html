@@ -1,5 +1,4 @@
 {% extends 'blog_user/base.html' %}
-
 {% block content %}
 
 <style>
@@ -39,7 +38,8 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-6">
-                <input for="search" placeholder="Search User" type="text" class="form-control py-2 mt-5">
+                <input onkeyup="searchUser()" placeholder="Search User" id="search" type="text" class="form-control py-2 mt-5">
+                <input type="text" class="form-control"  id="opt">
             </div>
         </div>
 
@@ -87,5 +87,47 @@
         </div>
     </div>
 </div>
+
+<script>
+
+
+var myInput = document.getElementById('opt');
+            if (myInput.value === '') {
+            myInput.style.display = 'none';
+            }
+
+    function searchUser(){
+        let keyword = $('#search').val()
+        if (keyword !== ''){
+            $.ajax({
+            url : "search-user",
+            type : "POST",
+            data : {
+                key : keyword
+            },
+            success : function (response){
+                // console.log(response.users);
+                data = response.users
+                // name=data.username
+                // console.log(name);
+                data.forEach((obj)=> {
+                console.log(obj.username);
+                $('#opt').val(obj.username)
+
+                if (myInput.value !== ''){
+                    myInput.style.display = 'block'; 
+                }
+
+            });
+
+            }
+        })
+
+        
+        }
+    }
+</script>
+
+
 
 {% endblock%}
